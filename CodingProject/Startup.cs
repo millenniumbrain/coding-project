@@ -27,12 +27,12 @@ namespace CodingProject
                 app.UseDeveloperExceptionPage();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseFileServer();
             app.UseMvc(routes => 
             {
                 routes.MapRoute(name: "Default", 
                     template: "{controller}/{action}/{id}", 
-                    defaults: new { controller = "Index", action = "Index"}
+                    defaults: new { controller = "Person", action = "Index"}
                 );
             });
         }

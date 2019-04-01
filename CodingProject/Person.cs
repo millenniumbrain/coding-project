@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,40 +11,39 @@ namespace CodingProject
     {
         private SqlConnection dbConnection;
         private int id;
-        private string username;
         private string firstName;
         private string lastName;
         private string dob;
         private List<Address> addresses;
 
         public int Id { get => id; set => id = value; }
-        public string Username { get => username; set => username = value; }
         public string FirstName { get => firstName; set => firstName = value; }
         public string LastName { get => lastName; set => lastName = value; }
         public string DOB { get => dob; set => dob = value; }
         public List<Address> Addresses { get => addresses; set => addresses = value; }
+        public SqlConnection DBConnection { get => dbConnection; set => dbConnection = value; }
 
         // set most properties to null as the default so that when we retrive people from the Database
         // we don't have to put all the business logic within the constructor. But can still create a new User object, modify its properites
         // In most cases the DB will handle the ID autoincrement and the assignment of the ID so just ignore it in the constructor
-        public Person(string username = null, string firstName = null, string lastName = null, string dob = null, SqlConnection dbConnection = null)
+        public Person(string firstName = null, string lastName = null, string dob = null, SqlConnection dbConnection = null)
         {
-            this.dbConnection = dbConnection;
-            Username = username;
             FirstName = firstName;
             LastName = lastName;
+            DOB = dob;
+            DBConnection = dbConnection;
             Addresses = new List<Address>();
         }
 
-        public static List<Person> PersonAddresses(SqlConnection userConnection)
+        public static List<Person> PersonAddresses(SqlConnection peopleConnection)
         {
-            string allQuery = "SELECT people.id AS personID, people.username, people.firstName, people.lastName, people.dob, " +
+            string allQuery = "SELECT people.id AS personID, people.firstName, people.lastName, people.dob, " +
                 "addresses.id AS addID, addresses.streetOne, addresses.streetTwo, addresses.city, addresses.state, addresses.zipCode " +
                 "FROM people LEFT JOIN addresses ON people.id = addresses.personID;";
             var people = new List<Person>();
-            var reader = new SqlCommand(allQuery, userConnection);
+            var reader = new SqlCommand(allQuery, peopleConnection);
 
-            userConnection.Open();
+            peopleConnection.Open();
 
             try
             {
@@ -56,8 +56,7 @@ namespace CodingProject
                     {
                         var person = new Person
                         {
-                            Id = Convert.ToInt32(result["userID"]),
-                            Username = result["username"].ToString(),
+                            Id = Convert.ToInt32(result["personID"]),
                             FirstName = result["firstName"].ToString(),
                             LastName = result["lastName"].ToString(),
                             DOB = result["DOB"].ToString()
@@ -100,32 +99,25 @@ namespace CodingProject
                 System.Diagnostics.Debug.WriteLine(error);
             }
 
-            userConnection.Close();
+            peopleConnection.Close();
             return people;
         }
 
-        public bool Save()
+        public Person Save()
         {
             int rowsAffected;
-            string insertQuery;
 
             // data validation
-            if (Username == "" || Username == null)
-            {
-                System.Diagnostics.Debug.WriteLine("Username cannot be undefined or empty!");
-                return false;
-            }
-
             if (FirstName == "" || FirstName == null)
             {
                 System.Diagnostics.Debug.WriteLine("First Name cannot be undefined or empty!");
-                return false;
+                return null;
             }
 
             if (LastName == "" || LastName == null)
             {
                 System.Diagnostics.Debug.WriteLine("Last Name cannot be undefined or empty!");
-                return false;
+                return null;
             }
 
             if (DOB == "" || DOB == null)
@@ -133,24 +125,95 @@ namespace CodingProject
                 System.Diagnostics.Debug.WriteLine("DOB cannot be undefined or empty!");
             }
 
-            insertQuery = $"INSERT INTO people (username, firstName, lastName, dob) Values('{Username}', '{FirstName}', '{LastName}', '01/11/1997');";
+            string insertQuery = $"INSERT INTO people (firstName, lastName, dob) Values('{FirstName}', '{LastName}', '{DOB}');";
 
             try
             {
-                var insertCommand = new SqlCommand(insertQuery, dbConnection);
-                dbConnection.Open();
+                var insertCommand = new SqlCommand(insertQuery, DBConnection);
+                DBConnection.Open();
 
                 rowsAffected = (int)insertCommand.ExecuteNonQuery();
-                System.Diagnostics.Debug.WriteLine(rowsAffected);
-                insertCommand.Connection.Close();
+
+                if (rowsAffected == 1)
+                {
+                    string lastQuery = "SELECT TOP 1 people.id AS personID, people.firstName, people.lastName, people.dob FROM people ORDER BY personID DESC;";
+                    Person person = null;
+                    try
+                    {
+                        var reader = new SqlCommand(lastQuery, DBConnection);
+                        SqlDataReader result = reader.ExecuteReader();
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                person = new Person
+                                {
+                                    Id = Convert.ToInt32(result["personID"]),
+                                    FirstName = result["firstName"].ToString(),
+                                    LastName = result["lastName"].ToString(),
+                                    DOB = result["DOB"].ToString()
+                                };
+                                System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(person, Formatting.Indented));
+                                DBConnection.Close();
+                                return person;
+
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        System.Diagnostics.Debug.WriteLine(error);
+                    }
+                }
+
+                DBConnection.Close();
+            }
+            catch (Exception error)
+            {
+                System.Diagnostics.Debug.WriteLine(FirstName + " " + LastName + " " + DOB);
+                System.Diagnostics.Debug.WriteLine(error);
+                return null;
+            }
+
+            return null;
+        }
+
+        public static Person Last(SqlConnection personConnection)
+        {
+            string allQuery = "SELECT TOP 1 people.id AS personID, people.firstName, people.lastName, people.dob FROM people ORDER BY personID DESC;";
+            Person person = null;
+            var reader = new SqlCommand(allQuery, personConnection);
+
+            personConnection.Open();
+
+            try
+            {
+                SqlDataReader result = reader.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        person = new Person
+                        {
+                            Id = Convert.ToInt32(result["personID"]),
+                            FirstName = result["firstName"].ToString(),
+                            LastName = result["lastName"].ToString(),
+                            DOB = result["DOB"].ToString()
+                        };
+                        personConnection.Close();
+
+                        return person;
+
+                    }
+                }
             }
             catch (Exception error)
             {
                 System.Diagnostics.Debug.WriteLine(error);
-                return false;
             }
+            personConnection.Close();
 
-            return true;
+            return person;
         }
     }
 }

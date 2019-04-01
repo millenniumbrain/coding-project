@@ -3,7 +3,6 @@
 -- to reflect the id object property for both tables
 CREATE TABLE people (
 	id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	username NVARCHAR(50) NOT NULL,
 	firstName NVARCHAR(100) NOT NULL,
 	lastName NVARCHAR(100) NOT NULL,
 	dob NVARCHAR(50) NOT NULL

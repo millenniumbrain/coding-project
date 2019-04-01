@@ -1,4 +1,5 @@
 ﻿var $form = $("#form");
+var $retrieve = $("#retrieveButton");
 
 $form.submit(function (event) {
     event.preventDefault();
@@ -12,3 +13,7 @@ $form.submit(function (event) {
         contentType: false
     })
 });
+
+$retrieve.click(function () {
+
+})

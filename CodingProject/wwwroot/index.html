@@ -9,6 +9,7 @@
         <header class="header">
             <h1>Almost there! We just need you to complete your profile.</h1>
         </header>
+        <div id="formMsg"></div>
         <div class="form-container">
             <form id="form" class="form">
                 <fieldset>
@@ -27,11 +28,11 @@
                     </div>
                     <div class="form-stack">
                         <label class="addr-label">Address Line 1</label>
-                        <input type="text" name="addrOne" placeholder="Street Address">
+                        <input type="text" name="streetOne" placeholder="Street Address">
                     </div>
                     <div class="form-stack">
                         <label class="addr-label">Address Line 2</label>
-                        <input type="text" name="addrTwo" placeholder="Apt Number, Suite Number, etc.">
+                        <input type="text" name="streetTwo" placeholder="Apt Number, Suite Number, etc.">
                     </div>
                     <div class="form-stack">
                         <label>Zip</label>
@@ -61,7 +62,7 @@
                     </tr>
                 </thead>
             </table>
-            <button>Retrieve</button>
+            <button id="retrieveButton">Retrieve</button>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

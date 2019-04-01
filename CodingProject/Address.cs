@@ -15,7 +15,7 @@ namespace CodingProject
         private string city;
         private string state;
         private string zipCode;
-        private int userID;
+        private int personID;
 
         public int Id { get => id; set => id = value; }
         public string StreetOne { get => streetOne; set => streetOne = value; }
@@ -23,24 +23,76 @@ namespace CodingProject
         public string City { get => city; set => city = value; }
         public string State { get => state; set => state = value; }
         public string ZipCode { get => zipCode; set => zipCode = value; }
-        public int UserID { get => userID; set => userID = value; }
+        public int PersonID { get => personID; set => personID = value; }
+        public SqlConnection DBConnection { get => dbConnection; set => dbConnection = value; }
 
-        public Address(string streetOne = null, string streetTwo = null, string City = null, string State = null, string ZipCode = null, SqlConnection dbConnection = null)
+        public Address(int personID = 0, string streetOne = null, string streetTwo = null, string City = null, string State = null, string ZipCode = null, SqlConnection dbConnection = null)
         {
-            this.dbConnection = dbConnection;
+            this.DBConnection = dbConnection;
             StreetOne = streetOne;
             StreetTwo = streetTwo;
             City = city;
             State = state;
             ZipCode = zipCode;
+            PersonID = personID;
         }
 
-        public bool Save()
+        public Address Save()
         {
             int rowsAffected;
-            string insertQuery;
 
-            return false;
+            string insertQuery = $"INSERT INTO addresses (streetOne, streetTwo, city, state, zipCode, personID) Values('{StreetOne}', '{StreetTwo}', '{City}', '{State}', '{zipCode}', '{PersonID}');";
+
+            try
+            {
+                var insertCommand = new SqlCommand(insertQuery, DBConnection);
+                DBConnection.Open();
+
+                rowsAffected = (int)insertCommand.ExecuteNonQuery();
+
+                if (rowsAffected == 1)
+                {
+                    string lastQuery = "SELECT TOP 1 id AS addID, streetOne, streetTwo, city, state, zipCode, personID FROM addresses ORDER BY personID DESC;";
+                    Address address = null;
+                    try
+                    {
+                        var reader = new SqlCommand(lastQuery, DBConnection);
+                        SqlDataReader result = reader.ExecuteReader();
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                address = new Address
+                                {
+                                    Id = Convert.ToInt32(result["personID"]),
+                                    StreetOne = result["streetOne"].ToString(),
+                                    StreetTwo = result["streetTwo"].ToString(),
+                                    City = result["city"].ToString(),
+                                    State = result["state"].ToString(),
+                                    ZipCode = result["zipCode"].ToString(),
+                                    PersonID = Convert.ToInt32(result["personID"])
+                                };
+                                DBConnection.Close();
+                                return address;
+
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        System.Diagnostics.Debug.WriteLine(error);
+                    }
+                }
+
+                DBConnection.Close();
+            }
+            catch (Exception error)
+            {
+                System.Diagnostics.Debug.WriteLine(error);
+                return null;
+            }
+
+            return null;
         }
 
         public static List<Address> All(SqlConnection addConnection)

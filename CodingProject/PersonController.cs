@@ -14,7 +14,7 @@ namespace CodingProject
     {
         // GET: /person
         [HttpGet]
-        public string Get()
+        public ActionResult Get()
         {
             string dataSrc = "Data Source=(local);";
             string intSec = "Integrated Security=SSPI;";
@@ -22,15 +22,41 @@ namespace CodingProject
             using (var interviewConn = new SqlConnection(interviewConnString))
             {
                 string json = JsonConvert.SerializeObject(Person.PersonAddresses(interviewConn), Formatting.Indented);
-                return json;
+                return Content(json, "application/json");
             }
         }
 
         // POST: /person
         [HttpPost]
-        public string Post(IFormCollection formData)
+        public ActionResult Post(IFormCollection formData)
         {
-            return formData["firstName"].ToString() + " " + formData["lastName"].ToString();
+            string dataSrc = "Data Source=(local);";
+            string intSec = "Integrated Security=SSPI;";
+            string interviewConnString = "Initial Catalog=interview;" + dataSrc + intSec;
+            using (var interviewConn = new SqlConnection(interviewConnString))
+            {
+                var person = new Person
+                {
+                    DBConnection = interviewConn,
+                    FirstName = formData["firstName"],
+                    LastName = formData["lastName"],
+                    DOB = formData["dob"]
+                };
+                Person savedPerson = person.Save();
+                var address = new Address
+                {
+                    DBConnection = interviewConn,
+                    StreetOne = formData["streetOne"].ToString(),
+                    StreetTwo = formData["streetTwo"].ToString(),
+                    City = formData["city"].ToString(),
+                    State = formData["state"].ToString(),
+                    ZipCode = formData["zipCode"].ToString(),
+                    PersonID = savedPerson.Id
+                };
+                savedPerson.Addresses.Add(address.Save());
+                string json = JsonConvert.SerializeObject(savedPerson);
+                return Content(json, "application/json");
+            }
         }
     }
 }
