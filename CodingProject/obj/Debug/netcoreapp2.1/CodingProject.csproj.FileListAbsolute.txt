@@ -1,0 +1,16 @@
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.deps.json
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.runtimeconfig.json
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.runtimeconfig.dev.json
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.dll
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.csprojAssemblyReference.cache
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.csproj.CoreCompileInputs.cache
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.RazorAssemblyInfo.cache
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.RazorAssemblyInfo.cs
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.AssemblyInfoInputs.cache
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.AssemblyInfo.cs
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.RazorTargetAssemblyInfo.cache
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.pdb
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.dll
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.pdb
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\bin\Debug\netcoreapp2.1\CodingProject.Views.dll
+C:\Users\William Wilson\source\repos\CodingProject\CodingProject\obj\Debug\netcoreapp2.1\CodingProject.csproj.CopyComplete

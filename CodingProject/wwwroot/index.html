@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shipping</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="container">
+        <header class="header">
+            <h1>Almost there! We just need you to complete your profile.</h1>
+        </header>
+        <div class="form-container">
+            <form id="form" class="form">
+                <fieldset>
+                    <legend>Profile Information</legend>
+                    <div class="form-stack">
+                        <label>First Name</label>
+                        <input type="text" name="firstName" placeholder="John">
+                    </div>
+                    <div class="form-stack">
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" placeholder="Smith">
+                    </div>
+                    <div class="form-stack">
+                        <label>Date of Birth</label>
+                        <input type="text" name="dob" placeholder="MM/DD/YYYY">
+                    </div>
+                    <div class="form-stack">
+                        <label class="addr-label">Address Line 1</label>
+                        <input type="text" name="addrOne" placeholder="Street Address">
+                    </div>
+                    <div class="form-stack">
+                        <label class="addr-label">Address Line 2</label>
+                        <input type="text" name="addrTwo" placeholder="Apt Number, Suite Number, etc.">
+                    </div>
+                    <div class="form-stack">
+                        <label>Zip</label>
+                        <input type="text" name="zipCode" placeholder="Example: 12345">
+                    </div>
+                    <div class="form-stack">
+                        <label>State</label>
+                        <select name="state">
+                            <option selected>OH</option>
+                        </select>
+                    </div>
+                    <button>Submit</button>
+                </fieldset>
+            </form>
+        </div>
+        <h2>Personal Info</h2>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th title="Date of Birth">DOB</th>
+                        <th>Zip Code</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+            </table>
+            <button>Retrieve</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
