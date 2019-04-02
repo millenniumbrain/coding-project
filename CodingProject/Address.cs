@@ -37,6 +37,8 @@ namespace CodingProject
             PersonID = personID;
         }
 
+        // Since the addresses table is tied to people table we need to make sure
+        // that on record creation, a person record is also inserted.
         public Address Save()
         {
             int rowsAffected;
