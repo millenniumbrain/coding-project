@@ -24,8 +24,9 @@ namespace CodingProject
         public SqlConnection DBConnection { get => dbConnection; set => dbConnection = value; }
 
         // set most properties to null as the default so that when we retrive people from the Database
-        // we don't have to put all the business logic within the constructor. But can still create a new User object, modify its properites
-        // In most cases the DB will handle the ID autoincrement and the assignment of the ID so just ignore it in the constructor
+        // we don't have to put all the business logic within the constructor. But can still create a new Person object, 
+        // modify its properites In most cases the DB will handle the ID 
+        // autoincrement and the assignment of the ID so just ignore it in the constructor
         public Person(string firstName = null, string lastName = null, string dob = null, SqlConnection dbConnection = null)
         {
             FirstName = firstName;
